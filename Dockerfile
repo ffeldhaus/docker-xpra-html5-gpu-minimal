@@ -35,6 +35,9 @@ USER xpra
 RUN mkdir xpra
 COPY ./xpra.conf xpra/xpra.conf
 
+USER root
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES \
         ${NVIDIA_VISIBLE_DEVICES:-all}
