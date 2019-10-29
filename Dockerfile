@@ -3,7 +3,7 @@ FROM ffeldhaus/docker-xpra-html5
 LABEL version="0.1"
 LABEL maintainer="florian.feldhaus@gmail.com"
 
-ARG VIRTUALGL_VERSION=2.5.2
+ARG VIRTUALGL_VERSION=2.6.2
 
 USER root
 
@@ -29,16 +29,11 @@ RUN cd /tmp && \
 RUN echo "/usr/local/nvidia/lib" >> /etc/ld.so.conf.d/nvidia.conf && \
     echo "/usr/local/nvidia/lib64" >> /etc/ld.so.conf.d/nvidia.conf
 
-USER xpra
-
 # copy xpra config file
 RUN mkdir xpra
 COPY ./xpra.conf xpra/xpra.conf
 
-USER root
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-ENTRYPOINT []
-CMD [ "/bin/bash" ]
 
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES \
