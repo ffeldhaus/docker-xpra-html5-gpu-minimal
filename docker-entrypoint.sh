@@ -8,3 +8,5 @@ GPU_DEVICE=$(/usr/local/nvidia/bin/nvidia-xconfig --query-gpu-info | grep PCI | 
 /usr/bin/xpra start --daemon=no --start-child="$@"
 
 cat /tmp/Xorg.*
+
+sleep infinity
