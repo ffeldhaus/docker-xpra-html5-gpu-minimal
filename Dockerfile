@@ -7,7 +7,7 @@ ARG VIRTUALGL_VERSION=2.6.2
 
 USER root
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y \
         libxau6 \
         libxdmcp6 \
         libxcb1 \
