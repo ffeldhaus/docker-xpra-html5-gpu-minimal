@@ -18,7 +18,6 @@ RUN apt-get update && apt-get install -y \
 	libglx0 \
 	libegl1 \
 	libgles2 \
-        nvidia-driver-430 \
         libxv1 && \
     rm -rf /var/lib/apt/lists/*
 
