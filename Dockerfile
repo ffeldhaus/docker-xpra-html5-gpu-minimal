@@ -3,7 +3,7 @@ FROM ffeldhaus/docker-xpra-html5
 LABEL version="0.1"
 LABEL maintainer="florian.feldhaus@gmail.com"
 
-ARG VIRTUALGL_VERSION=2.6.2
+ARG VIRTUALGL_VERSION=2.6.80
 
 USER root
 
@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/*
 
 RUN cd /tmp && \
-    curl -fsSL -O https://svwh.dl.sourceforge.net/project/virtualgl/${VIRTUALGL_VERSION}/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
+    curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/dev/linux/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
     dpkg -i virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
     rm -f /tmp/virtualgl_${VIRTUALGL_VERSION}_amd64.deb
 
