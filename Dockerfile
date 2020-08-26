@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
 	libgl1 \
 	libglx0 \
 	libegl1 \
+    libegl1-mesa \
 	libgles2 \
         libxv1 && \
     rm -rf /var/lib/apt/lists/*
