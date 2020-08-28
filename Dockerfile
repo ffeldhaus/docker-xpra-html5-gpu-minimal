@@ -1,6 +1,6 @@
 FROM ffeldhaus/docker-xpra-html5
 
-LABEL version="0.1"
+LABEL version="0.2"
 LABEL maintainer="florian.feldhaus@gmail.com"
 
 ARG VIRTUALGL_VERSION=2.6.80
@@ -27,23 +27,10 @@ RUN cd /tmp && \
     dpkg -i virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
     rm -f /tmp/virtualgl_${VIRTUALGL_VERSION}_amd64.deb
 
-RUN echo "/usr/local/nvidia/lib" >> /etc/ld.so.conf.d/nvidia.conf && \
-    echo "/usr/local/nvidia/lib64" >> /etc/ld.so.conf.d/nvidia.conf
-
-# copy xpra config file
-RUN mkdir xpra
-COPY ./xpra.conf xpra/xpra.conf
-
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES \
         ${NVIDIA_VISIBLE_DEVICES:-all}
 ENV NVIDIA_DRIVER_CAPABILITIES \
         ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics,utility,video,display
-
-# Required for non-glvnd setups.
-ENV LD_LIBRARY_PATH /usr/lib/x86_64-linux-gnu:/usr/lib/i386-linux-gnu${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}:/usr/local/nvidia/lib:/usr/local/nvidia/lib64
-ENV PATH /usr/local/nvidia/bin:${PATH}
 
 COPY 10_nvidia.json /usr/share/glvnd/egl_vendor.d/10_nvidia.json
