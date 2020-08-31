@@ -2,8 +2,9 @@
 
 This docker image provides remote access using [xpra](https://xpra.org/) to an xterm via a HTML5 based web client listening on port 14500 for websocket connections.
 
-In addition to the docker-xpra-html5 image, this image also provides OpenGL acceleration using [VirtualGL](https://virtualgl.org/). Currently this only works with NVIDIA GPUs and requires the NVIDIA drivers to be installed on the docker host. For Ubuntu the NVIDIA drivers can be installed with (see [NVIDIA Container Toolkit
-](https://github.com/NVIDIA/nvidia-docker) for details)
+In addition to the docker-xpra-html5 image, this image also provides OpenGL acceleration using [VirtualGL](https://virtualgl.org/). Currently this only works with NVIDIA GPUs and requires the NVIDIA drivers to be installed on the docker host. 
+
+For Ubuntu the NVIDIA drivers can be installed with:
 
 ```sh
 # install recommended NVIDIA drivers
@@ -11,7 +12,12 @@ sudo apt-get update && sudo apt-get install -y ubuntu-drivers-common
 sudo ubuntu-drivers devices
 sudo ubuntu-drivers autoinstall
 reboot
+```
 
+Additionally it is required to install the NVIDIA Container Toolkit which enables GPU sharing with docker containers (see [NVIDIA Container Toolkit
+](https://github.com/NVIDIA/nvidia-docker) for details and instructions for other distributions).
+
+```sh
 # install NVIDIA Container Toolkit
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
 curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
