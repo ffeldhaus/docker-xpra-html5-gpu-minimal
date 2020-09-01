@@ -25,6 +25,7 @@ RUN apt-get update && apt-get install -y \
     dpkg -i virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
     rm virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
     apt-get remove -y --purge curl && \
+    apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
 # nvidia-container-runtime
@@ -41,6 +42,8 @@ COPY 10_nvidia.json /usr/share/glvnd/egl_vendor.d/10_nvidia.json
 # ensure that the xpra user is in the vglusers group to be able to access the GPUs
 RUN usermod --groups vglusers --append xpra
 
-USER xpra
+# using xpra user does not work currently
+#USER xpra
 
-CMD ["/opt/VirtualGL/bin/vglrun","-d","/dev/dri/card0","/opt/VirtualGL/bin/glxspheres64"]
+# passing the command does not work currently 
+#CMD ["/opt/VirtualGL/bin/vglrun","-d","/dev/dri/card0","/opt/VirtualGL/bin/glxspheres64"]
