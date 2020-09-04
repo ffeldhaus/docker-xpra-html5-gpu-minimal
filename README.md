@@ -4,14 +4,22 @@ This docker image provides remote access using [xpra](https://xpra.org/) to an x
 
 In addition to the docker-xpra-html5 image, this image also provides OpenGL acceleration using [VirtualGL](https://virtualgl.org/). Currently this only works with NVIDIA GPUs and requires the NVIDIA drivers to be installed on the docker host. 
 
+On the docker host with the GPUs, we first need to run `vglserver_config` to ensure that permissions are set correctly:
+```sh
+# ensures that vglusers group get permission to NVIDIA devices /dev/nvidia* and /dev/dri/card0 and /dev/dri/render*
+VIRTUALGL_VERSION=2.6.80
+apt-get update && apt-get install -y libegl1-mesa libglu1-mesa libxv1 libxtst6 x11-common
+curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/dev/linux/virtualgl_${VIRTUALGL_VERSION}_amd64.deb
+dpkg -i virtualgl_${VIRTUALGL_VERSION}_amd64.deb
+vglserver_config +egl
+rm /etc/modprobe.d/virtualgl.conf
+```
+
 For Ubuntu the NVIDIA drivers can be installed with:
 
 ```sh
-# install recommended NVIDIA drivers
-sudo apt-get update && sudo apt-get install -y ubuntu-drivers-common
-sudo ubuntu-drivers devices
-sudo ubuntu-drivers autoinstall
-reboot
+LATEST_NVIDIA_DRIVER_VERSION=$(apt-cache search nvidia-headless | grep -E 'nvidia-headless-[0-9]+ ' | sed -r -e 's/nvidia-headless-([0-9]+).*/\1/' | tail -1)
+sudo apt-get update && sudo apt-get install -y nvidia-headless-$LATEST_NVIDIA_DRIVER_VERSION nvidia-utils-$LATEST_NVIDIA_DRIVER_VERSION libnvidia-gl-$LATEST_NVIDIA_DRIVER_VERSION
 ```
 
 Additionally it is required to install the NVIDIA Container Toolkit which enables GPU sharing with docker containers (see [NVIDIA Container Toolkit
@@ -22,15 +30,16 @@ Additionally it is required to install the NVIDIA Container Toolkit which enable
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
 curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
 curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-
 sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
-sudo systemctl restart docker
+reboot
 ```
+
+It is very important to reboot your system after installing the prerequisites before running a container with this image!
 
 When running a container, the GPU needs to be passed to the container including the `/dev/dri` devices. The following is an example to run the glxspheres64 demo on the first GPU of the docker host:
 
 ```sh
-docker run --gpus 1 --device=/dev/dri -p 14500:14500 ffeldhaus/docker-xpra-html5-opengl "vglrun -d /dev/dri/card0 /opt/VirtualGL/bin/glxspheres64"
+docker run --gpus 1 --device=/dev/dri -p 14500:14500 ffeldhaus/docker-xpra-html5-opengl
 ```
 
 Then open a browser with the hostname or IP of your docker host:
