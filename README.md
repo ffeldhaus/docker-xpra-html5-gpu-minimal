@@ -4,17 +4,6 @@ This docker image provides remote access using [xpra](https://xpra.org/) to an x
 
 In addition to the docker-xpra-html5 image, this image also provides OpenGL acceleration using [VirtualGL](https://virtualgl.org/). Currently this only works with NVIDIA GPUs and requires the NVIDIA drivers to be installed on the docker host. 
 
-On the docker host with the GPUs, we first need to run `vglserver_config` to ensure that permissions are set correctly:
-```sh
-# ensures that vglusers group get permission to NVIDIA devices /dev/nvidia* and /dev/dri/card0 and /dev/dri/render*
-VIRTUALGL_VERSION=2.6.80
-apt-get update && apt-get install -y libegl1-mesa libglu1-mesa libxv1 libxtst6 x11-common
-curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/dev/linux/virtualgl_${VIRTUALGL_VERSION}_amd64.deb
-dpkg -i virtualgl_${VIRTUALGL_VERSION}_amd64.deb
-vglserver_config +egl
-rm /etc/modprobe.d/virtualgl.conf
-```
-
 For Ubuntu the NVIDIA drivers can be installed with:
 
 ```sh
