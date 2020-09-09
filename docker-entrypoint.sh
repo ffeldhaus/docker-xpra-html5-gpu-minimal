@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# configure dbus
-dbus-uuidgen > /var/lib/dbus/machine-id
-mkdir -p /var/run/dbus
-dbus-daemon --config-file=/usr/share/dbus-1/system.conf --print-address
-
 # ensure that xpra user is part of vglusers group which must have been set for /dev/dri/card0
 DRI_CARD_GID=$(ls -ln /dev/dri/card* | head -1 | awk '{print $4}')
 DRI_RENDER_GID=$(ls -ln /dev/dri/render* | head -1 | awk '{print $4}')

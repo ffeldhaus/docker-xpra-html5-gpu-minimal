@@ -28,7 +28,7 @@ It is very important to reboot your system after installing the prerequisites be
 When running a container, the GPU needs to be passed to the container including the `/dev/dri` devices. The following is an example to run the glxspheres64 demo on the first GPU of the docker host:
 
 ```sh
-docker run --gpus 1 --device=/dev/dri -p 14500:14500 ffeldhaus/docker-xpra-html5-opengl
+docker run --gpus 1 --device=/dev/dri -p 14500:14500 ffeldhaus/docker-xpra-html5-opengl-minimal
 ```
 
 Then open a browser with the hostname or IP of your docker host:

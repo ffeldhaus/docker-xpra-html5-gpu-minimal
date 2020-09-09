@@ -1,15 +1,14 @@
-FROM ffeldhaus/docker-xpra-html5
+FROM ffeldhaus/docker-xpra-html5-minimal
 
-LABEL version="0.4"
+LABEL version="0.5"
 LABEL maintainer="florian.feldhaus@gmail.com"
 
 ARG VIRTUALGL_VERSION=2.6.80
 
-USER root
-
 RUN apt-get update && apt-get install -y \
     curl \
-    libegl1-mesa && \
+    libegl1-mesa \
+    libxv1 && \
     curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/dev/linux/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
     dpkg -i virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
     rm virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
