@@ -10,4 +10,4 @@ groupadd -f -g $DRI_RENDER_GID $DRI_RENDER_GROUP_NAME
 usermod --groups $DRI_CARD_GID,$DRI_RENDER_GID --append xpra
 
 # start xpra as xpra user with command specified in dockerfile as CMD or passed as parameter to docker run
-runuser -l xpra -c "/usr/bin/xpra start --daemon=no --start-child='$@'"
+runuser -l xpra -c "/usr/bin/xpra start-desktop --daemon=no --start-child='$@'"
