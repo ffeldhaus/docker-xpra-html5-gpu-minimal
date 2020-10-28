@@ -1,6 +1,6 @@
-FROM ffeldhaus/docker-xpra-html5-minimal
+FROM ffeldhaus/xpra-html5-minimal
 
-LABEL version="0.5"
+LABEL version="0.6"
 LABEL maintainer="florian.feldhaus@gmail.com"
 
 ARG VIRTUALGL_VERSION=2.6.80
@@ -26,5 +26,5 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 # ensure that all OpenGL applications started via vglrun are using video mode for best display quality in HTML5 client
 RUN echo "\nclass-instance:vglrun=video" >> /usr/share/xpra/content-type/50_class.conf
 
-# passing the command does not work currently 
-#CMD ["/opt/VirtualGL/bin/vglrun","-d","/dev/dri/card0","/opt/VirtualGL/bin/glxspheres64"]
+# start glxinfo by default
+CMD ["/opt/VirtualGL/bin/vglrun -d /dev/dri/card0 /opt/VirtualGL/bin/glxinfo"]
